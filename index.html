@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semoga Cepat Sembuh</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1b1b2f;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .container {
+            z-index: 2;
+            position: relative;
+            padding-top: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin: 20px;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        .scrolling-text {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+        }
+
+        .scrolling-text span {
+            display: inline-block;
+            padding: 0 50px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .counter {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1rem;
+            color: white;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background"></canvas>
+    <div class="container">
+        <h1>Semoga Cepat Sembuh</h1>
+        <p>
+            Kekasihku,  
+            Saat kamu menghadapi hari-hari sulit ini, ingatlah bahwa kamu tidak pernah sendirian. Aku di sini,  
+            menyemangati setiap langkahmu menuju kesembuhan. Setiap detik, setiap doa, dan setiap harapan, semuanya  
+            untukmu.  
+        </p>
+        <p>
+            Tidak peduli betapa berat perjalanan ini, aku percaya kamu adalah sosok yang kuat. Cintaku tidak pernah pudar,  
+            dan aku akan selalu menunggumu dengan pelukan hangat. Cepat sembuh, sayangku. Dunia lebih indah dengan senyummu.  
+        </p>
+        <div class="counter">
+            Hari kesembuhanmu dimulai sekarang: <span id="recovery-counter">0</span> hari!
+        </div>
+        <div class="button-container">
+            <button class="button" onclick="showHeart()">💖 Kirim Cinta</button>
+            <button class="button" onclick="playMusic()">🎵 Mainkan Musik</button>
+        </div>
+    </div>
+
+    <div class="scrolling-text">
+        <span>Semoga sembuh, cinta tak pernah pudar, aku selalu bersamamu ❤️</span>
+        <span>Semoga sembuh, cinta tak pernah pudar, aku selalu bersamamu ❤️</span>
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="im-yours.mp3" type="audio/mpeg">
+        </audio>
+
+    <script>
+        // Musik latar
+        const music = document.getElementById('background-music');
+
+        function playMusic() {
+            if (music.paused) {
+                music.play();
+                alert('Musik dimainkan!');
+            } else {
+                music.pause();
+                alert('Musik dihentikan.');
+            }
+        }
+
+        // Animasi hati
+        function showHeart() {
+            const heart = document.createElement('div');
+            heart.style.position = 'absolute';
+            heart.style.left = `${Math.random() * window.innerWidth}px`;
+            heart.style.top = `${Math.random() * window.innerHeight}px`;
+            heart.style.fontSize = '2rem';
+            heart.style.color = '#ff6f61';
+            heart.textContent = '❤️';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
+        }
+
+        // Partikel bintang
+        const canvas = document.getElementById('background');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) {
+                    this.speedX *= -1;
+                }
+
+                if (this.y > canvas.height || this.y < 0) {
+                    this.speedY *= -1;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        // Counter
+        let recoveryDays = 0;
+        const counterElement = document.getElementById('recovery-counter');
+
+        setInterval(() => {
+            recoveryDays++;
+            counterElement.textContent = recoveryDays;
+        }, 86400000); // Setiap 24 jam (1 hari)
+    </script>
+</body>
+</html>
